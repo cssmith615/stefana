@@ -4,12 +4,31 @@ import { supabase } from '../lib/supabase';
 import { UserProfile, UserRole } from '../types';
 import { initializePurchases } from '../utils/purchases';
 
+function safeAuthError(message: string): string {
+  const lower = message.toLowerCase();
+  if (
+    lower.includes('invalid login') ||
+    lower.includes('invalid credentials') ||
+    lower.includes('email not confirmed')
+  ) {
+    return 'The email or password is not correct.';
+  }
+  if (lower.includes('already registered') || lower.includes('already exists')) {
+    return 'An account with this email already exists. Try signing in instead.';
+  }
+  if (lower.includes('password')) {
+    return 'Please choose a stronger password.';
+  }
+  return 'Something went wrong. Please try again.';
+}
+
 interface AuthState {
   session: Session | null;
   user: User | null;
   profile: UserProfile | null;
   loading: boolean;
   initialized: boolean;
+  profileLoading: boolean;
 
   initialize: () => Promise<void>;
   signUp: (email: string, password: string, displayName: string, role: UserRole) => Promise<{ error?: string }>;
@@ -27,6 +46,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   profile: null,
   loading: false,
   initialized: false,
+  profileLoading: false,
 
   initialize: async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -38,12 +58,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
 
     supabase.auth.onAuthStateChange(async (_event, session) => {
-      set({ session, user: session?.user ?? null });
       if (session?.user) {
+        set({ session, user: session.user, profileLoading: true });
         await get().loadProfile();
         initializePurchases(session.user.id);
       } else {
-        set({ profile: null });
+        set({ session: null, user: null, profile: null, profileLoading: false });
       }
     });
 
@@ -55,7 +75,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const { data, error } = await supabase.auth.signUp({ email, password });
     if (error) {
       set({ loading: false });
-      return { error: error.message };
+      return { error: safeAuthError(error.message) };
     }
 
     if (data.user) {
@@ -68,7 +88,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       });
       if (profileError) {
         set({ loading: false });
-        return { error: profileError.message };
+        return { error: 'We could not finish creating your profile. Please try again.' };
       }
       await get().loadProfile();
     }
@@ -82,7 +102,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       set({ loading: false });
-      return { error: error.message };
+      return { error: safeAuthError(error.message) };
     }
     set({ loading: false });
     return {};
@@ -94,8 +114,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   loadProfile: async () => {
+    set({ profileLoading: true });
     const user = get().user ?? (await supabase.auth.getUser()).data.user;
-    if (!user) return;
+    if (!user) {
+      set({ profileLoading: false });
+      return;
+    }
 
     const { data, error } = await supabase
       .from('user_profiles')
@@ -105,16 +129,18 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     if (error || !data) {
       // Profile may not exist yet — create a fallback
+      const meta = user.user_metadata ?? {};
+      const displayName = meta.full_name || meta.name || meta.email?.split('@')[0] || 'User';
       const { data: created } = await supabase
         .from('user_profiles')
-        .insert({ id: user.id, display_name: 'User', tier: 'free', role: 'user', onboarding_done: false })
+        .insert({ id: user.id, display_name: displayName, tier: 'free', role: 'user', onboarding_done: false })
         .select()
         .single();
-      set({ profile: created ?? null });
+      set({ profile: created ?? null, profileLoading: false });
       return;
     }
 
-    set({ profile: data as UserProfile });
+    set({ profile: data as UserProfile, profileLoading: false });
   },
 
   updateProfile: async (updates) => {

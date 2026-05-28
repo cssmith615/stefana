@@ -212,7 +212,7 @@ function useNotificationTapHandler(navRef: React.RefObject<NavigationContainerRe
 }
 
 export default function RootNavigator() {
-  const { session, profile, initialized, initialize } = useAuthStore();
+  const { session, profile, initialized, profileLoading, initialize } = useAuthStore();
   const navRef = useRef<NavigationContainerRef<any>>(null!) as React.RefObject<NavigationContainerRef<any>>;
   useNotificationTapHandler(navRef);
 
@@ -220,7 +220,7 @@ export default function RootNavigator() {
     initialize();
   }, []);
 
-  if (!initialized) {
+  if (!initialized || profileLoading) {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: Colors.background }}>
         <ActivityIndicator color={Colors.primary} />
