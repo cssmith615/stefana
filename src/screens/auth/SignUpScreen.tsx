@@ -17,6 +17,8 @@ import { Colors, Typography, Spacing, Radius } from '../../theme';
 import { AuthStackParams } from '../../navigation';
 import { UserRole } from '../../types';
 
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 type Props = {
   navigation: NativeStackNavigationProp<AuthStackParams, 'SignUp'>;
 };
@@ -31,15 +33,21 @@ export default function SignUpScreen({ navigation }: Props) {
 
   const handleSignUp = async () => {
     setError('');
-    if (!displayName || !email || !password) {
+    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedName = displayName.trim();
+    if (!normalizedName || !normalizedEmail || !password) {
       setError('Please fill in all fields.');
       return;
     }
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters.');
+    if (!EMAIL_PATTERN.test(normalizedEmail)) {
+      setError('Enter a valid email address.');
       return;
     }
-    const result = await signUp(email.trim().toLowerCase(), password, displayName.trim(), role);
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters.');
+      return;
+    }
+    const result = await signUp(normalizedEmail, password, normalizedName, role);
     if (result.error) setError(result.error);
   };
 
@@ -52,7 +60,7 @@ export default function SignUpScreen({ navigation }: Props) {
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
           {/* Header */}
           <View style={styles.header}>
-            <Text style={styles.wordmark}>Aisle</Text>
+            <Text style={styles.wordmark}>Stefana</Text>
             <Text style={styles.subtitle}>Create your account</Text>
           </View>
 
@@ -105,7 +113,7 @@ export default function SignUpScreen({ navigation }: Props) {
               style={styles.input}
               value={password}
               onChangeText={setPassword}
-              placeholder="At least 6 characters"
+              placeholder="At least 8 characters"
               placeholderTextColor={Colors.textMuted}
               secureTextEntry
             />

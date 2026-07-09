@@ -1,7 +1,7 @@
-# Aisle — App Store Listing Copy
+# Stefana — App Store Listing Copy
 
 ## App Name
-Aisle – Wedding Planner
+Stefana – Wedding Planner
 
 ## Subtitle (iOS, 30 chars max)
 Plan your perfect wedding day
@@ -13,7 +13,7 @@ Beautiful, simple wedding planning. Checklist, budget, guests & AI help.
 
 **Your wedding, beautifully planned.**
 
-Aisle is the calm, elegant wedding planning app built for real couples — not overwhelming spreadsheets or cluttered dashboards. Everything you need, nothing you don't.
+Stefana is the calm, elegant wedding planning app built for real couples — not overwhelming spreadsheets or cluttered dashboards. Everything you need, nothing you don't.
 
 **Plan your timeline**
 A smart checklist auto-generates your full wedding timeline the moment you set a date — organized by 12, 9, 6, 4, 2, and 1 month milestones. Add your own custom tasks anytime. Long-press to delete. Simple.
@@ -40,7 +40,7 @@ Keep all your registry links in one place — Zola, The Knot, Amazon, Target, an
 Plan your music for every moment — processional, first dance, cocktail hour, reception, and last dance. Build your wishlist and hand it off to your DJ or band.
 
 **Wedding Day Forecast**
-When your big day is 10 days away, Aisle automatically shows the weather forecast right on your Day-of Timeline so you can plan accordingly.
+When your big day is 10 days away, Stefana automatically shows the weather forecast right on your Day-of Timeline so you can plan accordingly.
 
 **Your wedding colors**
 Choose from 10 hand-crafted color palettes to match your wedding theme. The entire app shifts to match — hero card, tab bar, and accents.
@@ -66,41 +66,49 @@ Lifestyle
 4+
 
 ## Privacy Policy URL
-https://cssmith615.github.io/aisle
+https://cssmith615.github.io/stefana
 
 ## Support URL
-https://cssmith615.github.io/aisle/support.html
+https://cssmith615.github.io/stefana/support.html
 
 ---
 
 ## What's New (v1.0.0)
-Initial release of Aisle — your calm, elegant wedding planning companion.
+Initial release of Stefana — your calm, elegant wedding planning companion.
 
 ---
 
 ## Screenshot Captions (in order)
 
-1. "Count down to your perfect day" — Dashboard with gold hero card
-2. "Every task, every milestone" — Checklist organized by planning phase
-3. "Budget clarity at a glance" — Budget donut ring with category breakdown
-4. "All your vendors, one place" — Vendors screen with status badges
-5. "Your guest list, sorted" — Guest list with RSVP summary strip
-6. "AI that knows your wedding" — AI Assistant chat screen
-7. "Delegate to your wedding party" — Wedding Party screen with share codes
-8. "Make it yours" — EventSettings with color palette picker
+> Order tells a story that converts: Hook → core tool → money → social → premium → supporting → fun.
+
+1. **Dashboard** — "Count down to your perfect day" — Gold gradient hero card, countdown, stats strip. First impression, has to be beautiful.
+2. **Checklist** — "Every task, every milestone" — Timeline grouped by phase with progress bar. Shows core value immediately.
+3. **Budget** — "Budget clarity at a glance" — SVG donut ring with category breakdown. Visually distinctive, stands out in the App Store grid.
+4. **Guest List** — "Your guest list, sorted" — RSVP summary strip. Brides recognize this pain immediately.
+5. **AI Assistant** — "AI that knows your wedding" — Show a realistic useful response (vendor email draft or day-of timeline). Premium differentiator.
+6. **Vendors** — "All your vendors, one place" — Status badges, clean and organized.
+7. **Wedding Party** — "Delegate to your wedding party" — Member cards with roles and share codes. Shows the collaboration angle.
+8. **Event Settings** — "Make it yours" — Palette picker showing multiple color themes. Unique, visually striking, shows personalization.
+
+**Device specs:**
+- iOS: iPhone 15 Pro — 6.7" (1290 × 2796px)
+- Android: Pixel 8 — 1080 × 2400px minimum
+
+**Mockup tools:** Shots.so, AppMockUp, or Figma device frames
 
 ---
 
 ## Google Play Store — Additional Info
 
 ### App Details (Play Console)
-- **App name:** Aisle: Wedding Planner
-- **Package name:** `com.aisle.weddingplanner`
+- **App name:** Stefana: Wedding Planner
+- **Package name:** `com.stefana.weddingplanner`
 - **Default language:** English (United States)
 - **App category:** Lifestyle
 - **Tags:** wedding, planner, bride
 - **Contact email:** support@aisleapp.wedding (or charles.smith615@gmail.com)
-- **Privacy Policy URL:** https://cssmith615.github.io/aisle
+- **Privacy Policy URL:** https://cssmith615.github.io/stefana
 
 ### Content Rating Questionnaire (Play Console)
 When Play asks about content — answer:
@@ -117,10 +125,10 @@ Create a subscription group, then add two products:
 
 | Product ID | Name | Price | Billing period |
 |---|---|---|---|
-| `com.aisle.weddingplanner.premium_monthly` | Aisle Premium | $7.99 | Monthly |
-| `com.aisle.weddingplanner.premium_yearly`  | Aisle Premium (Annual) | $74.99 | Yearly |
-| `com.aisle.weddingplanner.pro_monthly`     | Aisle Pro | $19.99 | Monthly |
-| `com.aisle.weddingplanner.pro_yearly`      | Aisle Pro (Annual) | $189.99 | Yearly |
+| `com.stefana.weddingplanner.premium_monthly` | Stefana Premium | $7.99 | Monthly |
+| `com.stefana.weddingplanner.premium_yearly`  | Stefana Premium (Annual) | $74.99 | Yearly |
+| `com.stefana.weddingplanner.pro_monthly`     | Stefana Pro | $19.99 | Monthly |
+| `com.stefana.weddingplanner.pro_yearly`      | Stefana Pro (Annual) | $189.99 | Yearly |
 
 ### Data Safety (Play Console — required)
 Under "Data types collected":

@@ -10,6 +10,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { Colors, Typography, Spacing, Radius, Shadow } from '../../theme';
 import { ChecklistCategory, ExpenseType } from '../../types';
 import { MainStackParams } from '../../navigation';
+import { toAmount, sumExpenses } from '../../utils/budgetUtils';
 
 const CAT_CONFIG: Record<string, { label: string; emoji: string }> = {
   venue:          { label: 'Venue',          emoji: '🏛️' },
@@ -57,7 +58,7 @@ export default function BudgetCategoryDetailScreen() {
   );
 
   const totalSpent = useMemo(
-    () => categoryExpenses.reduce((s, e) => s + Number(e.amount), 0),
+    () => sumExpenses(categoryExpenses),
     [categoryExpenses]
   );
 
@@ -152,7 +153,7 @@ export default function BudgetCategoryDetailScreen() {
                 <View style={styles.expenseTop}>
                   <Text style={styles.expenseDesc}>{exp.description}</Text>
                   <Text style={styles.expenseAmount}>
-                    -${Number(exp.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    -${toAmount(exp.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </Text>
                 </View>
                 <View style={styles.expenseMeta}>

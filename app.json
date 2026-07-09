@@ -1,34 +1,35 @@
 {
   "expo": {
-    "name": "Aisle",
-    "slug": "aisle",
+    "name": "Stefana",
+    "slug": "stefana",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "icon": "./assets/icon.png",
-    "scheme": "aisle",
+    "scheme": "stefana",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#FDFAF8"
     },
     "ios": {
-      "bundleIdentifier": "com.aisle.weddingplanner",
-      "buildNumber": "1",
+      "bundleIdentifier": "com.stefana.weddingplanner",
+      "buildNumber": "5",
       "supportsTablet": false,
       "infoPlist": {
-        "NSCameraUsageDescription": "Aisle uses your camera to scan receipts and vendor contracts.",
-        "NSPhotoLibraryUsageDescription": "Aisle accesses your photo library to attach photos to vendors and expenses.",
-        "NSUserNotificationsUsageDescription": "Aisle sends reminders for upcoming wedding tasks and countdowns.",
+        "NSCameraUsageDescription": "Stefana uses your camera to scan receipts and vendor contracts.",
+        "NSPhotoLibraryUsageDescription": "Stefana accesses your photo library to attach photos to vendors and expenses.",
+        "NSUserNotificationsUsageDescription": "Stefana sends reminders for upcoming wedding tasks and countdowns.",
         "UIBackgroundModes": [
           "fetch",
           "remote-notification"
-        ]
+        ],
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
-      "package": "com.aisle.weddingplanner",
-      "versionCode": 1,
+      "package": "com.stefana.weddingplanner",
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
@@ -58,18 +59,19 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Aisle uses your photo library to add inspiration images to your moodboard.",
-          "cameraPermission": "Aisle uses your camera to capture inspiration photos."
+          "photosPermission": "Stefana uses your photo library to add inspiration images to your moodboard.",
+          "cameraPermission": "Stefana uses your camera to capture inspiration photos."
         }
       ],
-      "expo-sharing"
+      "expo-sharing",
+      "expo-font"
     ],
     "extra": {
       "eas": {
-        "projectId": "1cbec0c2-ae55-4208-af71-739f638fa4f5"
+        "projectId": "f829736a-4d49-475d-b368-51ff323e9ea0"
       },
-      "privacyPolicyUrl": "https://cssmith615.github.io/aisle",
-      "supportUrl": "https://cssmith615.github.io/aisle/support.html"
+      "privacyPolicyUrl": "https://cssmith615.github.io/stefana",
+      "supportUrl": "https://cssmith615.github.io/stefana/support.html"
     },
     "owner": "chuckssmith"
   }

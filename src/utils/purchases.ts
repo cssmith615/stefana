@@ -7,11 +7,11 @@
  * RevenueCat dashboard setup required:
  *  1. Create products in App Store Connect + Google Play Console
  *     Monthly:
- *       - com.aisle.weddingplanner.premium_monthly ($7.99/mo)
- *       - com.aisle.weddingplanner.pro_monthly ($19.99/mo)
+ *       - com.stefana.weddingplanner.premium_monthly ($7.99/mo)
+ *       - com.stefana.weddingplanner.pro_monthly ($19.99/mo)
  *     Yearly:
- *       - com.aisle.weddingplanner.premium_yearly ($74.99/yr)
- *       - com.aisle.weddingplanner.pro_yearly ($189.99/yr)
+ *       - com.stefana.weddingplanner.premium_yearly ($74.99/yr)
+ *       - com.stefana.weddingplanner.pro_yearly ($189.99/yr)
  *  2. Create entitlements in RevenueCat dashboard:
  *     - "premium" → premium_monthly + premium_yearly
  *     - "pro"     → pro_monthly + pro_yearly
@@ -20,16 +20,16 @@
 
 // ─── Keys (fill in from RevenueCat dashboard) ────────────────────────────────
 
-const REVENUECAT_APPLE_KEY  = 'appl_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-const REVENUECAT_GOOGLE_KEY = 'goog_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+const REVENUECAT_APPLE_KEY = 'appl_gjsAccdfHKSXfabKApYiOXrtjlK';
+const REVENUECAT_GOOGLE_KEY = 'goog_CJOXhwvINHWikyCXHETMJtzNPhH';
 
 // ─── Product IDs ─────────────────────────────────────────────────────────────
 
 export const PRODUCT_IDS = {
-  premium_monthly: 'com.aisle.weddingplanner.premium_monthly',
-  premium_yearly:  'com.aisle.weddingplanner.premium_yearly',
-  pro_monthly:     'com.aisle.weddingplanner.pro_monthly',
-  pro_yearly:      'com.aisle.weddingplanner.pro_yearly',
+  premium_monthly: 'com.stefana.weddingplanner.premium_monthly',
+  premium_yearly: 'com.stefana.weddingplanner.premium_yearly',
+  pro_monthly: 'com.stefana.weddingplanner.pro_monthly',
+  pro_yearly: 'com.stefana.weddingplanner.pro_yearly',
 } as const;
 
 export type PurchasableTier = 'premium' | 'pro';
@@ -79,7 +79,7 @@ export async function initializePurchases(userId: string): Promise<void> {
     // Already set up — just log in with the current user
     try {
       await P.logIn(userId);
-    } catch {}
+    } catch { }
     return;
   }
 
@@ -102,7 +102,7 @@ export async function getCurrentTier(): Promise<'free' | 'premium' | 'pro'> {
 
   try {
     const info = await P.getCustomerInfo();
-    if (info.entitlements.active['pro'])     return 'pro';
+    if (info.entitlements.active['pro']) return 'pro';
     if (info.entitlements.active['premium']) return 'premium';
     return 'free';
   } catch {
@@ -133,7 +133,7 @@ export async function purchasePlan(tier: PurchasableTier, billing: BillingPeriod
 
     const { customerInfo } = await P.purchasePackage(pkg);
 
-    if (customerInfo.entitlements.active['pro'])     return { success: true, tier: 'pro' };
+    if (customerInfo.entitlements.active['pro']) return { success: true, tier: 'pro' };
     if (customerInfo.entitlements.active['premium']) return { success: true, tier: 'premium' };
     return { success: true, tier: 'free' };
 
@@ -153,7 +153,7 @@ export async function restorePurchases(): Promise<PurchaseResult> {
 
   try {
     const info = await P.restorePurchases();
-    if (info.entitlements.active['pro'])     return { success: true, tier: 'pro' };
+    if (info.entitlements.active['pro']) return { success: true, tier: 'pro' };
     if (info.entitlements.active['premium']) return { success: true, tier: 'premium' };
     return { success: true, tier: 'free' };
   } catch (e: any) {

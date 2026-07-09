@@ -15,6 +15,7 @@ import { ChecklistCategory, ExpenseType, CreateExpenseInput } from '../../types'
 import { MainStackParams } from '../../navigation';
 import { Ionicons } from '@expo/vector-icons';
 import { exportBudgetPdf } from '../../utils/exportUtils';
+import { toAmount, parseAmountInput, budgetSummary, totalsByCategory } from '../../utils/budgetUtils';
 
 const CATEGORIES: { key: ChecklistCategory; label: string; emoji: string }[] = [
   { key: 'venue',        label: 'Venue',        emoji: '🏛️' },
@@ -71,19 +72,13 @@ export default function BudgetScreen() {
   };
 
   const totalBudget = activeEvent?.total_budget ?? 0;
-  const totalSpent = useMemo(() => expenses.reduce((s, e) => s + Number(e.amount), 0), [expenses]);
-  const remaining = totalBudget - totalSpent;
-  const pct = totalBudget > 0 ? Math.min(totalSpent / totalBudget, 1) : 0;
+  const { totalSpent, remaining, pct, overBudget } = useMemo(
+    () => budgetSummary(activeEvent?.total_budget, expenses),
+    [activeEvent?.total_budget, expenses],
+  );
   const strokeDashoffset = CIRCUMFERENCE * (1 - pct);
-  const overBudget = remaining < 0;
 
-  const byCategory = useMemo(() => {
-    const map: Record<string, number> = {};
-    expenses.forEach(e => {
-      map[e.category] = (map[e.category] ?? 0) + Number(e.amount);
-    });
-    return map;
-  }, [expenses]);
+  const byCategory = useMemo(() => totalsByCategory(expenses), [expenses]);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
@@ -205,7 +200,7 @@ export default function BudgetScreen() {
                     {CATEGORIES.find(c => c.key === exp.category)?.label ?? exp.category} · {exp.expense_type.replace('_', ' ')}
                   </Text>
                 </View>
-                <Text style={styles.expenseAmount}>-${Number(exp.amount).toLocaleString()}</Text>
+                <Text style={styles.expenseAmount}>-${toAmount(exp.amount).toLocaleString()}</Text>
               </View>
             ))}
           </>
@@ -246,12 +241,17 @@ function AddExpenseModal({
   };
 
   const handleSave = () => {
-    if (!description || !amount || !eventId) return;
+    if (!description.trim() || !eventId) return;
+    const parsedAmount = parseAmountInput(amount);
+    if (parsedAmount === null) {
+      Alert.alert('Invalid amount', 'Enter a positive dollar amount, e.g. 1200 or 1200.50.');
+      return;
+    }
     onSave({
       event_id: eventId,
       category,
-      description,
-      amount: parseFloat(amount),
+      description: description.trim(),
+      amount: parsedAmount,
       expense_type: type,
       paid_date: new Date().toISOString().split('T')[0],
     });

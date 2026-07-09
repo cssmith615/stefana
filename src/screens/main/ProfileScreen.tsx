@@ -199,11 +199,11 @@ export default function ProfileScreen() {
 
         {/* Legal */}
         <View style={styles.legalRow}>
-          <TouchableOpacity onPress={() => Linking.openURL('https://cssmith615.github.io/aisle')}>
+          <TouchableOpacity onPress={() => Linking.openURL('https://cssmith615.github.io/stefana')}>
             <Text style={styles.legalLink}>Privacy Policy</Text>
           </TouchableOpacity>
           <Text style={styles.legalDot}>·</Text>
-          <TouchableOpacity onPress={() => Linking.openURL('https://cssmith615.github.io/aisle/support.html')}>
+          <TouchableOpacity onPress={() => Linking.openURL('https://cssmith615.github.io/stefana/support.html')}>
             <Text style={styles.legalLink}>Support</Text>
           </TouchableOpacity>
         </View>
@@ -212,7 +212,7 @@ export default function ProfileScreen() {
           <Text style={styles.deleteText}>Delete Account</Text>
         </TouchableOpacity>
 
-        <Text style={styles.version}>Aisle v1.0.0</Text>
+        <Text style={styles.version}>Stefana v1.0.0</Text>
       </ScrollView>
     </SafeAreaView>
   );

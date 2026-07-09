@@ -16,6 +16,7 @@ import { MainStackParams } from '../../navigation';
 import { useTheme } from '../../context/ThemeContext';
 import { SafeAreaView as SAV } from 'react-native-safe-area-context';
 import { EventType } from '../../types';
+import { daysUntilEvent, toDateOnlyString } from '../../utils/dateUtils';
 
 export default function DashboardScreen() {
   const { profile } = useAuthStore();
@@ -26,6 +27,7 @@ export default function DashboardScreen() {
   const { events, checklistItems, expenses, guests, vendors, timelineEvents, moodboardItems, activeEventId, loadEvents, setActiveEvent, createEvent, seedChecklistFromTemplate } = useEventStore();
   const [showSwitcher, setShowSwitcher] = useState(false);
   const [showNewEvent, setShowNewEvent] = useState(false);
+  const [nameBannerDismissed, setNameBannerDismissed] = useState(false);
 
   const activeEvent = events.find(e => e.id === activeEventId);
 
@@ -41,9 +43,7 @@ export default function DashboardScreen() {
   }, [profile?.id]);
 
   // Derived values
-  const daysUntil = activeEvent?.event_date
-    ? Math.ceil((new Date(activeEvent.event_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
-    : null;
+  const daysUntil = daysUntilEvent(activeEvent?.event_date ?? null);
 
   const totalTasks = checklistItems.length;
   const completedTasks = checklistItems.filter(i => i.is_completed).length;
@@ -80,12 +80,31 @@ export default function DashboardScreen() {
         <View style={styles.header}>
           <Text style={styles.greeting}>Hello, {profile?.display_name?.split(' ')[0]?.replace(/@.*/, '') ?? 'there'} 👋</Text>
           <View style={styles.headerRight}>
-            <Text style={[styles.wordmark, { color: palette.primary }]}>Aisle</Text>
+            <Text style={[styles.wordmark, { color: palette.primary }]}>Stefana</Text>
             <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={styles.gearButton}>
               <Ionicons name="settings-outline" size={22} color={Colors.textMuted} />
             </TouchableOpacity>
           </View>
         </View>
+
+        {/* Name nudge banner */}
+        {profile?.display_name === 'User' && !nameBannerDismissed && (
+          <TouchableOpacity
+            style={[styles.featureBanner, { borderColor: palette.primary + '44', marginBottom: Spacing.md }]}
+            onPress={() => navigation.navigate('Profile')}
+          >
+            <View style={[styles.bannerIconWrap, { backgroundColor: palette.primary + '18' }]}>
+              <Text style={styles.bannerEmoji}>👤</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.bannerTitle}>Tell us your name</Text>
+              <Text style={styles.bannerSub}>Personalize your Stefana experience</Text>
+            </View>
+            <TouchableOpacity onPress={(e) => { e.stopPropagation(); setNameBannerDismissed(true); }} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+              <Ionicons name="close" size={18} color={Colors.textMuted} />
+            </TouchableOpacity>
+          </TouchableOpacity>
+        )}
 
         {/* Hero countdown card */}
         <LinearGradient

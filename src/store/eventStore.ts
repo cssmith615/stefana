@@ -1,5 +1,7 @@
 import { create } from 'zustand';
+import * as Crypto from 'expo-crypto';
 import { supabase } from '../lib/supabase';
+import { subtractMonthsFromDate } from '../utils/dateUtils';
 import {
   Event, ChecklistItem, Vendor, Expense, Guest, AiConversation,
   WeddingPartyMember, WeddingPartyRole,
@@ -10,6 +12,12 @@ import {
   CreateEventInput, CreateChecklistItemInput, CreateVendorInput,
   CreateExpenseInput, CreateGuestInput,
 } from '../types';
+
+async function generateShareCode(length = 10): Promise<string> {
+  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const bytes = await Crypto.getRandomBytesAsync(length);
+  return Array.from(bytes, byte => alphabet[byte % alphabet.length]).join('');
+}
 
 interface EventState {
   activeEventId: string | null;
@@ -217,9 +225,7 @@ export const useEventStore = create<EventState>((set, get) => ({
     const items = templates.map((t: any) => {
       let due_date: string | null = null;
       if (eventDate) {
-        const date = new Date(eventDate);
-        date.setMonth(date.getMonth() - t.months_before);
-        due_date = date.toISOString().split('T')[0];
+        due_date = subtractMonthsFromDate(eventDate, t.months_before);
       }
       return {
         event_id: eventId,
@@ -335,11 +341,7 @@ export const useEventStore = create<EventState>((set, get) => ({
   },
 
   addWeddingPartyMember: async (eventId, name, role, email) => {
-    // Generate 8-char share code
-    const share_code = Array.from(crypto.getRandomValues(new Uint8Array(4)))
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('')
-      .toUpperCase();
+    const share_code = await generateShareCode();
 
     const { data, error } = await supabase
       .from('wedding_party')

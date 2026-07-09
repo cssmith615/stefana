@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/charl/OneDrive/Desktop/Chuck's Second Brain/**)",
+      "Read(//c/Users/charl/sovereign/**)",
+      "Bash(python eval/harness.py .)",
+      "Bash(py --version)",
+      "Bash(where python3:*)",
+      "Bash(where py:*)",
+      "Bash(py eval/harness.py .)",
+      "Bash(attrib +R CLAUDE.md constitution.md)",
+      "Bash(attrib +R eval/harness.py)",
+      "Bash(attrib +R eval/tasks/*.txt eval/tasks/*.json)",
+      "Bash(attrib +R CLAUDE.md)",
+      "Bash(attrib +R constitution.md)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\charl\\OneDrive\\Desktop\\Chuck's Second Brain\\Dev",
+      "C:\\Users\\charl\\sovereign"
+    ]
+  }
+}

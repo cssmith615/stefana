@@ -7,6 +7,7 @@ import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { useEventStore } from '../../store/eventStore';
 import { Colors, Typography, Spacing, Radius, Shadow } from '../../theme';
 import { MainStackParams } from '../../navigation';
+import { daysUntilEvent } from '../../utils/dateUtils';
 import ChecklistScreen from './ChecklistScreen';
 import BudgetScreen from './BudgetScreen';
 import VendorsScreen from './VendorsScreen';
@@ -26,9 +27,7 @@ export default function ClientDetailScreen() {
   const total = checklistItems.length;
   const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-  const daysUntil = event?.event_date
-    ? Math.ceil((new Date(event.event_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
-    : null;
+  const daysUntil = daysUntilEvent(event?.event_date ?? null);
 
   const renderTab = () => {
     switch (activeTab) {

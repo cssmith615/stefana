@@ -28,7 +28,7 @@ export default function OnboardingWelcomeScreen({ navigation }: Props) {
           </View>
 
           {/* Wordmark */}
-          <Text style={styles.wordmark}>Aisle</Text>
+          <Text style={styles.wordmark}>Stefana</Text>
           <Text style={styles.tagline}>Your wedding, beautifully planned.</Text>
 
           {/* Feature list */}

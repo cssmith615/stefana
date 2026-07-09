@@ -46,7 +46,7 @@ export default function NotificationsScreen() {
     if (!granted) {
       Alert.alert(
         'Permission Required',
-        'Please enable notifications for Aisle in your device settings.',
+        'Please enable notifications for Stefana in your device settings.',
         [
           { text: 'Cancel', style: 'cancel' },
           { text: 'Open Settings', onPress: () => Linking.openSettings() },
@@ -112,7 +112,7 @@ export default function NotificationsScreen() {
             <Ionicons name="notifications-off-outline" size={22} color={Colors.white} />
             <View style={styles.permText}>
               <Text style={styles.permTitle}>Notifications are off</Text>
-              <Text style={styles.permSub}>Tap to enable so Aisle can remind you</Text>
+              <Text style={styles.permSub}>Tap to enable so Stefana can remind you</Text>
             </View>
             <Ionicons name="chevron-forward" size={18} color={Colors.white} />
           </TouchableOpacity>

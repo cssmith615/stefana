@@ -16,6 +16,8 @@ import { useAuthStore } from '../../store/authStore';
 import { Colors, Typography, Spacing, Radius } from '../../theme';
 import { AuthStackParams } from '../../navigation';
 
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 type Props = {
   navigation: NativeStackNavigationProp<AuthStackParams, 'SignIn'>;
 };
@@ -28,29 +30,39 @@ export default function SignInScreen({ navigation }: Props) {
   const { signIn, loading } = useAuthStore();
 
   const handleForgotPassword = async () => {
-    if (!email.trim()) {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail) {
       setError('Enter your email above first, then tap Forgot Password.');
       return;
     }
+    if (!EMAIL_PATTERN.test(normalizedEmail)) {
+      setError('Enter a valid email address first.');
+      return;
+    }
     const { supabase } = require('../../lib/supabase');
-    const { error: resetError } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
-      redirectTo: 'aisle://reset-password',
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
+      redirectTo: 'stefana://reset-password',
     });
     if (resetError) {
-      setError(resetError.message);
-    } else {
-      setResetSent(true);
-      setError('');
+      setError('We could not send a reset email right now. Please try again.');
+      return;
     }
+    setResetSent(true);
+    setError('');
   };
 
   const handleSignIn = async () => {
     setError('');
-    if (!email || !password) {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail || !password) {
       setError('Please enter your email and password.');
       return;
     }
-    const result = await signIn(email.trim().toLowerCase(), password);
+    if (!EMAIL_PATTERN.test(normalizedEmail)) {
+      setError('Enter a valid email address.');
+      return;
+    }
+    const result = await signIn(normalizedEmail, password);
     if (result.error) setError(result.error);
   };
 
@@ -63,7 +75,7 @@ export default function SignInScreen({ navigation }: Props) {
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
           {/* Header */}
           <View style={styles.header}>
-            <Text style={styles.wordmark}>Aisle</Text>
+            <Text style={styles.wordmark}>Stefana</Text>
             <Text style={styles.tagline}>Your wedding, beautifully planned.</Text>
           </View>
 

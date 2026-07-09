@@ -1,4 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
+import { getPlanningPhase } from './dateUtils';
 
 const API_KEY_STORE_KEY = 'anthropic_api_key';
 const MODEL = 'claude-haiku-4-5-20251001';
@@ -98,15 +99,7 @@ export async function sendMessage(
 }
 
 function buildSystemPrompt(ctx: EventContext): string {
-  const phase = ctx.daysUntil != null
-    ? ctx.daysUntil > 365 ? '12+ months out'
-    : ctx.daysUntil > 270 ? '9 months out'
-    : ctx.daysUntil > 180 ? '6 months out'
-    : ctx.daysUntil > 90  ? '3 months out'
-    : ctx.daysUntil > 30  ? '1 month out'
-    : ctx.daysUntil > 0   ? 'final stretch (under 30 days!)'
-    : 'wedding day has passed'
-    : 'early planning (no date set)';
+  const phase = getPlanningPhase(ctx.daysUntil);
 
   const budgetLine = ctx.totalBudget
     ? `$${ctx.budgetSpent.toLocaleString()} spent of $${ctx.totalBudget.toLocaleString()} total (${ctx.budgetOverBudget ? '⚠️ OVER BUDGET' : `$${ctx.budgetRemaining.toLocaleString()} remaining`})`
@@ -124,7 +117,7 @@ function buildSystemPrompt(ctx: EventContext): string {
     ? `${ctx.vendorsBooked}/${ctx.vendorsTotal} booked. Booked: ${ctx.bookedCategories || 'none'}. Still needed: ${ctx.missingCategories || 'none'}`
     : 'No vendors added yet';
 
-  return `You are a warm, experienced wedding planning assistant named Aisle.
+  return `You are a warm, experienced wedding planning assistant named Stefana.
 
 == WEDDING DETAILS ==
 Event: ${ctx.eventName}

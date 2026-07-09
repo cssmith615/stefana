@@ -13,6 +13,7 @@ import { useEventStore } from '../../store/eventStore';
 import { Colors, Typography, Spacing, Radius, Shadow } from '../../theme';
 import { MainStackParams } from '../../navigation';
 import { Event } from '../../types';
+import { daysUntilEvent } from '../../utils/dateUtils';
 
 export default function ProDashboardScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParams>>();
@@ -122,9 +123,7 @@ function ClientCard({ event, taskCount, completedCount, onPress }: {
   completedCount: number;
   onPress: () => void;
 }) {
-  const daysUntil = event.event_date
-    ? Math.ceil((new Date(event.event_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
-    : null;
+  const daysUntil = daysUntilEvent(event.event_date);
   const pct = taskCount > 0 ? Math.round((completedCount / taskCount) * 100) : 0;
 
   return (

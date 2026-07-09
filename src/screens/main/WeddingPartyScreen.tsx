@@ -124,7 +124,7 @@ export default function WeddingPartyScreen() {
                 style={styles.shareRow}
                 onPress={() => {
                   Share.share({
-                    message: `Hi ${item.name}! You've been assigned tasks for our wedding. Use code ${item.share_code} in the Aisle app to view and complete them. 💍`,
+                    message: `Hi ${item.name}! You've been assigned tasks for our wedding. Use code ${item.share_code} in the Stefana app to view and complete them. 💍`,
                     title: 'Your Wedding Tasks',
                   });
                 }}
@@ -215,7 +215,7 @@ function AssignTasksModal({ member, tasks, visible, onClose, onAssign, onRemoveM
           <TouchableOpacity
             style={styles.shareCodeCard}
             onPress={() => Share.share({
-              message: `Hi ${member.name}! Use code ${member.share_code} in the Aisle app to view your wedding tasks. 💍`,
+              message: `Hi ${member.name}! Use code ${member.share_code} in the Stefana app to view your wedding tasks. 💍`,
             })}
           >
             <Text style={styles.shareCodeBig}>{member.share_code}</Text>

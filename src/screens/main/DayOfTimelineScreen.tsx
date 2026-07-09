@@ -12,6 +12,7 @@ import { TimelineCategory, TimelineEvent, CreateTimelineEventInput } from '../..
 import { Colors, Typography, Spacing, Radius, Shadow } from '../../theme';
 import { useTheme } from '../../context/ThemeContext';
 import { exportTimelinePdf } from '../../utils/exportUtils';
+import { daysUntilEvent } from '../../utils/dateUtils';
 
 // ─── Category config ─────────────────────────────────────────────────────────
 
@@ -272,9 +273,7 @@ export default function DayOfTimelineScreen() {
     setSeeding(false);
   };
 
-  const daysUntil = activeEvent?.event_date
-    ? Math.ceil((new Date(activeEvent.event_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
-    : null;
+  const daysUntil = daysUntilEvent(activeEvent?.event_date ?? null);
 
   const showWeather = daysUntil !== null && daysUntil >= 0 && daysUntil <= 10;
 

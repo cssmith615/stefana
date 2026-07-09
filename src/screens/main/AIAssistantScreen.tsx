@@ -13,6 +13,7 @@ import { useAuthStore } from '../../store/authStore';
 import { useEventStore } from '../../store/eventStore';
 import { Colors, Typography, Spacing, Radius, Shadow } from '../../theme';
 import { sendMessage, getApiKey, saveApiKey, AiMessage, EventContext } from '../../utils/aiAssistant';
+import { daysUntilEvent, toDateOnlyString } from '../../utils/dateUtils';
 
 const QUICK_PROMPTS = [
   "What should I focus on right now?",
@@ -45,12 +46,10 @@ export default function AIAssistantScreen() {
   }, []);
 
   const getContext = (): EventContext => {
-    const daysUntil = activeEvent?.event_date
-      ? Math.ceil((new Date(activeEvent.event_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
-      : null;
+    const daysUntil = daysUntilEvent(activeEvent?.event_date ?? null);
 
     const now = new Date();
-    const in30 = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+    const in30 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 30);
 
     // Budget
     const totalBudget = activeEvent?.total_budget ?? null;
@@ -63,10 +62,10 @@ export default function AIAssistantScreen() {
       .map(([cat, amt]) => `${cat} ($${Math.round(amt / 1000)}k)`).join(', ');
 
     // Checklist
-    const today = now.toISOString().split('T')[0];
+    const today = toDateOnlyString(now);
     const overdueTasks = checklistItems.filter(i => !i.is_completed && i.due_date && i.due_date < today).length;
     const upcomingTaskTitles = checklistItems
-      .filter(i => !i.is_completed && i.due_date && i.due_date >= today && new Date(i.due_date) <= in30)
+      .filter(i => !i.is_completed && i.due_date && i.due_date >= today && i.due_date <= toDateOnlyString(in30))
       .sort((a, b) => a.due_date! > b.due_date! ? 1 : -1)
       .slice(0, 3).map(t => t.title).join(', ');
 
@@ -185,7 +184,7 @@ export default function AIAssistantScreen() {
           <Text style={styles.setupEmoji}>🤖</Text>
           <Text style={styles.setupTitle}>Connect your AI assistant</Text>
           <Text style={styles.setupText}>
-            Aisle uses Claude AI to answer your planning questions, draft vendor emails, and more.
+            Stefana uses Claude AI to answer your planning questions, draft vendor emails, and more.
             {'\n\n'}
             You'll need a free Anthropic API key to get started. Visit console.anthropic.com to get yours.
           </Text>
@@ -314,7 +313,7 @@ function MessageBubble({ message }: { message: AiMessage }) {
   const isUser = message.role === 'user';
   return (
     <View style={[styles.bubble, isUser ? styles.bubbleUser : styles.bubbleAssistant]}>
-      {!isUser && <Text style={styles.bubbleName}>Aisle ✨</Text>}
+      {!isUser && <Text style={styles.bubbleName}>Stefana ✨</Text>}
       <Text style={[styles.bubbleText, isUser && styles.bubbleTextUser]}>
         {message.content}
       </Text>
